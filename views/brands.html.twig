@@ -1,8 +1,33 @@
 <html>
   <head>
-    <title></title>
+    <title>All Shoe Brands</title>
   </head>
+
   <body>
-    
+    <div class="container">
+
+      {% if brands is not empty %}
+      <ul>
+          {% element in brands %}
+          <li><a href="/brands/{{element.getId()}}">{{element.getBrand()}}</a></li>
+          {% endfor %}
+      </ul>
+      {% else %}
+          <p>There are no shoe brands!</p>
+      {% endif %}
+
+      <form action="/brands" method="post">
+          <label for="brand_name">Enter New Brand Name</label>
+          <input id="brand_name" name="brand_name" type="text">
+
+      </form>
+
+      <form action="/brands/delete" method="post">
+          <button type="submit">Delete All</button>
+      </form>
+
+      <h5><a href="/">Home</a></h5>
+    </div>
+
   </body>
 </html>

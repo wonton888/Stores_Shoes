@@ -1,38 +1,38 @@
-<?php 
+<?php
 	require_once __DIR__."/../vendor/autoload.php";
 	require_once __DIR__/"/../src/Brand/php";
 	require_once __DIR_/"/../src/Store.php";
-	
+
 	$app = new Silex\Application();
 	$app['debug'] = true;
-	
+
 	$server = 'mysql:host=localhost;dbname=shoes_test';
 	$username = 'root';
 	$password = 'root';
 	$DB = new PDO($server. $username, $password);
-	
+
 	use Symfony\Component\HttpFoundation\Request;
     Request::enableHttpMethodParameterOverride();
-	
+
 	$app->register(new Silex\Provider\TwigServiceProvider(), array(
                     'twig.path' => __DIR__.'/../views'
     ));
-	
+
 	//Index Page
 	$app->get("/", function() use ($app){
 		return $app['twig']->render('brands.html.twig', array('stores'=> Store::getAll(), 'brands'=>Brand::getAll()));
 	});
-	
+
 	$app->get('/stores', function() use ($app){
 		return $app['twig']->render('stores.html.twig', array('stores'=> Store::getAll()));
 	});
-	
+
 	$app->post('/stores', function() use ($app){
 		$new_store = new Store($_POST['new_store']);
 		$new_store->save();
 		return $app['twig']->render("stores.html.twig", array('stores'=> Store::getAll()));
 	});
-	
+
 	$app->post('/stores/delete', function() use ($app){
 		Store::deleteAll();
 		return $app['twig']->render("stores.html.twig", array('stores'=> Store::getAll()));
@@ -80,7 +80,7 @@
          $brand->delete();
          return $app['twig']->render('brands.html.twig', array('brands' => Brand::getAll()));
     });
-	
+
 	$app->post('/addBrands', function() use ($app){
 		$store = Store::find($_POST['store_id']);
 		$brand = Brand::find($_POST['brand_id']);
@@ -88,12 +88,4 @@
 		return $app['twig']->render('store.html.twig', array('store'=>$store, 'stores'=>getAll(), 'brands'=> $store->getBrands(), 'all_brands'=> Brand::getAll()));
 	});
 	return $app;
-?>	
-	
-	
-	
-	
-	
-	
-	
-	
+?>
