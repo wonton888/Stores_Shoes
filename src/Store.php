@@ -1,4 +1,4 @@
-<?php 
+<?php
 	class Store {
 		private $name;
 		private $id;
@@ -46,21 +46,23 @@
 
 		function delete()
 		{
-			$GLOBALS['DB']->exec("DELETE FROM stores WHERE id {$this->getId()};");
+			$GLOBALS['DB']->exec("DELETE FROM stores WHERE id = {$this->getId()};");
 			$GLOBALS['DB']->exec("DELETE FROM stores_brands WHERE id = {$this->getId()};");
 		}
 
 		static function getAll()
 		{
 			$query = $GLOBALS['DB']->query("SELECT * FROM stores;");
-			$all_stores = array();
-			foreach ($query as $store){
-				$name = $store['name'];
-				$id = $store['id'];
-				$new_store = new Store ($name, $id);
-				array_push($all_stores, $new_store);
+			$stores = $query->fetchAll(PDO::FETCH_ASSOC);
+			$return_stores = array();
+			foreach($stores as $element)
+			{
+					$new_name = $element['name'];
+					$new_id = $element['id'];
+					$new_store = new Store($new_name, $new_id);
+					array_push ($return_stores, $new_store);
 			}
-			return $all_stores;
+			return $return_stores;
 		}
 
 		static function deleteAll()
@@ -89,16 +91,16 @@
 
 		function getBrands()
 		{
-			$query = $GLOBALS['DB']->query("SELECT brands.* FROM brands JOIN stores_brands ON (brands.id = stores_brands.brands_id) JOIN stores ON (stores_brands.stores_id = stores.id) WHERE stores.id = {$this->getId()};");
-            $returned_query = $query->fetchAll(PDO::FETCH_ASSOC);
+			$query = $GLOBALS['DB']->query("SELECT brands.* FROM stores  JOIN stores_brands ON (stores.id = stores_brands.store_id) JOIN brands ON
+				(stores_brands.brand_id=brands.id) WHERE stores.id = {$this->getId()};
+			");
 			$return_brands = array();
-
-			foreach ($returned_query as $element)
+			foreach ($query as $element)
 			{
 				$brand_name = $element['name'];
 				$brand_id = $element['id'];
-				$brand = new Brand($brand_name, $brand_id);
-				array_push($return_brands, $brand);
+				$new_brand = new Brand($brand_name, $brand_id);
+				array_push($return_brands, $new_brand);
 			}
 			return $return_brands;
 		}

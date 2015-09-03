@@ -4,6 +4,7 @@
   </head>
   <body>
     <div class="container">
+        <h3><a href="/">Home</a> <a href="/brands">Brands</a></h3>
         <h2>{{ brand.getBrand() }}</h2>
 
         {% if stores is not empty %}
@@ -11,7 +12,7 @@
             <ul>
               {% for element in stores %}
               <li>
-                  {{ element.getName }}
+                  {{ element.getName() }}
               </li>
               {% endfor %}
         {% else %}
@@ -34,8 +35,6 @@
           <input name="_method" type="hidden" value="delete">
           <button type="submit">Delete Store</button>
         </form>
-
-        <h5><a href="/">Home</a></h5>
 
     </div>
 

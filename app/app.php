@@ -1,26 +1,28 @@
 <?php
-	require_once __DIR__."/../vendor/autoload.php";
-	require_once __DIR__/"/../src/Brand/php";
-	require_once __DIR_/"/../src/Store.php";
 
-	$app = new Silex\Application();
-	$app['debug'] = true;
+		require_once __DIR__."/../vendor/autoload.php";
+		require_once __DIR__."/../src/Brand.php";
+		require_once __DIR__."/../src/Store.php";
 
-	$server = 'mysql:host=localhost;dbname=shoes_test';
-	$username = 'root';
-	$password = 'root';
-	$DB = new PDO($server. $username, $password);
+		$app = new Silex\Application();
 
-	use Symfony\Component\HttpFoundation\Request;
-    Request::enableHttpMethodParameterOverride();
+		$app['debug'] = true;
 
-	$app->register(new Silex\Provider\TwigServiceProvider(), array(
-                    'twig.path' => __DIR__.'/../views'
-    ));
+		$server = 'mysql:host=localhost;dbname=shoes';
+		$username = 'root';
+		$password = 'root';
+		$DB = new PDO($server, $username, $password);
+
+		$app->register(new Silex\Provider\TwigServiceProvider(), array(
+				'twig.path' => __DIR__.'/../views'
+		));
+
+		use Symfony\Component\HttpFoundation\Request;
+		Request::enableHttpMethodParameterOverride();
 
 	//Index Page
 	$app->get("/", function() use ($app){
-		return $app['twig']->render('brands.html.twig', array('stores'=> Store::getAll(), 'brands'=>Brand::getAll()));
+		return $app['twig']->render('index.html.twig');
 	});
 
 	$app->get('/stores', function() use ($app){
@@ -39,7 +41,7 @@
 	});
 	$app->get('/stores/{id}', function($id) use ($app){
 		$store = Store::find($id);
-		return $app['twig']->render("store.html.twig", array('store'=>$store, 'stores'=> Store::getAll(), 'brands'=>getBrands(), 'all_brands'=>getAll()));
+		return $app['twig']->render("store.html.twig", array('store'=>$store, 'stores'=> Store::getAll(), 'brands'=> $store->getBrands(), 'all_brands'=> Brand::getAll()));
 	});
 	$app->patch('/updateStore/{id}', function($id) use ($app){
 		$store = Store::find($id);
@@ -81,11 +83,12 @@
          return $app['twig']->render('brands.html.twig', array('brands' => Brand::getAll()));
     });
 
-	$app->post('/addBrands', function() use ($app){
-		$store = Store::find($_POST['store_id']);
-		$brand = Brand::find($_POST['brand_id']);
-		$store->addBrand($brand);
-		return $app['twig']->render('store.html.twig', array('store'=>$store, 'stores'=>getAll(), 'brands'=> $store->getBrands(), 'all_brands'=> Brand::getAll()));
-	});
-	return $app;
+		$app->post('/addBrands', function() use ($app) {
+				 $store = Store::find($_POST['store_id']);
+				 $brand = Brand::find($_POST['brand_id']);
+				 $store->addBrand($brand);
+				 return $app['twig']->render('store.html.twig', array('store' => $store, 'stores' => Store::getAll(), 'brands' => $store->getBrands(), 'all_brands' => Brand::getAll()));
+		});
+
+		return $app;
 ?>

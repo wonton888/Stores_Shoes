@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	class Brand {
 
@@ -54,16 +54,13 @@
 
 		function getStores()
 		{
-			$query = $GLOBALS['DB']->query("SELECT stores.* FROM stores JOIN stores_brands ON (stores.id = stores_brands.stores_id) JOIN brands ON (stores_brands.brands_id = brands.id) WHERE brands.id = {$this->getId()};");
-            $returned_query = $query->fetchAll(PDO::FETCH_ASSOC);
+			$query = $GLOBALS['DB']->query("SELECT stores.* FROM brands JOIN stores_brands ON (brands.id = stores_brands.brand_id) JOIN stores ON (stores_brands.store_id = stores.id) WHERE brands.id = {$this->getId()};");
 			$return_stores = array();
-
-			foreach ($returned_query as $element)
-			{
+			foreach ($query as $element){
 				$name = $element['name'];
 				$id = $element['id'];
-				$store = new Brand($name, $id);
-				array_push($return_stores, $store);
+				$new_store = new Store($name, $id);
+				array_push($return_stores, $new_store);
 			}
 			return $return_stores;
 		}
