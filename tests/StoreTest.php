@@ -141,12 +141,13 @@
 			//Arrange
 			$name = "Store A";
 			$test_store = new Store($name);
+			$test_store->save();
 
 			$new_name = "Store B";
 			$test_store->update($new_name);
 
 			//Act
-			$result = Store::getAll();
+			$result = $test_store->getName();
 
 			//Assert
 			$this->assertEquals("Store B", $result);
@@ -251,7 +252,7 @@
 			$result = $test_store->getBrands();
 
 			//Assert
-			$this->assertEquals([], $result);
+			$this->assertEquals([$test_brand, $test_brand2], $result);
 
 		}
 

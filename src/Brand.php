@@ -49,12 +49,15 @@
 
 		function addStore($new_store)
 		{
-			$GLOBALS['DB']->exec("INSERT INTO stores_brands (stores_id, brands_id) VALUES ({$new_store->getId()}, {$this->getId()});");
+			$GLOBALS['DB']->exec("INSERT INTO stores_brands (store_id, brand_id) VALUES ({$new_store->getId()}, {$this->getId()});");
 		}
 
 		function getStores()
 		{
-			$query = $GLOBALS['DB']->query("SELECT stores.* FROM brands JOIN stores_brands ON (brands.id = stores_brands.brand_id) JOIN stores ON (stores_brands.store_id = stores.id) WHERE brands.id = {$this->getId()};");
+			$query = $GLOBALS['DB']->query("SELECT stores.* FROM brands
+								JOIN stores_brands ON (brands.id = stores_brands.brand_id)
+								JOIN stores ON (stores_brands.store_id = stores.id)
+								WHERE brands.id = {$this->getId()};");
 			$return_stores = array();
 			foreach ($query as $element){
 				$name = $element['name'];
