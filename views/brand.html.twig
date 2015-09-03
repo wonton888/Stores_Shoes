@@ -20,7 +20,7 @@
             </ul>
         {% endif %}
 
-        <form action="addStores" method="post">
+        <form action="/addStores" method="post">
           <input id = "brand_id" name="brand_id" type="hidden" value = "{{ brand.getId() }}">
           <label for="store_id">Choose a Store</label>
           <select id="store_id" name="store_id" type="text">
