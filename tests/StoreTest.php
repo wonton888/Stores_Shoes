@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	 /**
     * @backupGlobals disabled
@@ -18,7 +18,7 @@
 		protected function tearDown()
 		{
 			Store::deleteAll();
-			// Brand::deleteAll();
+			Brand::deleteAll();
 		}
 
 		//Getters and Setters
@@ -134,6 +134,23 @@
 
 			//Assert
 			$this->assertEquals([], $result);
+		}
+
+		function test_update()
+		{
+			//Arrange
+			$name = "Store A";
+			$test_store = new Store($name);
+
+			$new_name = "Store B";
+			$test_store->update($new_name);
+
+			//Act
+			$result = Store::getAll();
+
+			//Assert
+			$this->assertEquals("Store B", $result);
+
 		}
 
 		function test_updateDatabase()

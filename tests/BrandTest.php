@@ -1,4 +1,4 @@
-<?php 
+<?php
 	    /**
     * @backupGlobals disabled
     * @backupStaticAttributes disabled
@@ -14,14 +14,14 @@
     class BrandTest extends PHPUnit_Framework_TestCase
     {
         protected function TearDown()
-        {
-            Brand::deleteAll();
-            Store::deleteAll();
-        }
+          {
+              Brand::deleteAll();
+              Store::deleteAll();
+          }
 
 		function test_getId()
-		{
-			//Arrange
+		      {
+			      //Arrange
             $name = "Shoe A";
             $id = 1;
             $test_brand = new Brand ($name, $id);
@@ -32,25 +32,25 @@
             //Assert
             $this->assertEquals(1, $result);
 
-		}
+		      }
 
 
         function test_setId()
-   	    {
-			//Arrange
-			$id = 1;
-			$name = "Shoe A";
-			$test_brand = new Store ($name, $id);
-			$new_id = 2;
-			$test_brand->setId($new_id);
+   	     {
+			      //Arrange
+      			$id = 1;
+      			$name = "Shoe A";
+      			$test_brand = new Store ($name, $id);
+      			$new_id = 2;
+      			$test_brand->setId($new_id);
 
-			//Act
-			$result = $test_brand->getId();
+      			//Act
+      			$result = $test_brand->getId();
 
-			//Assert
-			$this->assertEquals(2, $result);
+      			//Assert
+      			$this->assertEquals(2, $result);
 
-		}
+		    }
 
 		function test_getBrand()
         {
