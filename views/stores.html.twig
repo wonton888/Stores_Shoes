@@ -4,19 +4,18 @@
   </head>
   <body>
     <div class="container">
-      <h2>{{ store.getName() }}</h2>
 
-      {% if brands is not empty %}
-      <p>These are the shoe brands in this store.</p>
+      {% if stores is not empty %}
+      <p>These are the all the stores.</p>
       <ul>
-          {% for element in brands %}
+          {% for element in stores %}
           <li>
-              {{ element.getBrand() }}
+              <a href="stores/{{ element.getId() }}">{{ element.getName() }}</a>
           </li>
           {% endfor %}
       </ul>
       {% else %}
-          <p>This store does not have shoe brands</p>
+          <p>No shoe brands listed!</p>
       {% endif %}
 
       <form action="/stores" method="post">
