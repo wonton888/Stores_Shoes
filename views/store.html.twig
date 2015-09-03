@@ -1,8 +1,48 @@
 <html>
   <head>
-    <title></title>
+    <title>Shoe Stores</title>
   </head>
+
   <body>
+    <div class="container">
+      <h2>{{ store.getName() }}</h2>
+
+      {% if brands is not empty %}
+          <p>These are the brands that are sold in the store.</p>
+          <ul>
+              {% for element in brands %}
+              <li>
+                  {{element.getBrand()}}
+              </li>
+              {% endfor %}
+          </ul>
+        {% else %}
+              <p>The store does not have any shoe brands!</p>
+      {% endif %}
+
+      <form action="/addBrands" method="post">
+          <input name='store_id' type='store_id' type='hidden' value='{{ store.getId() }}'>
+          <label for='brand_id'>Select a shoe brand to add to this store</label>
+          <select id="brand_id" name="brand_id" type="text">
+              {% for element in all_brands %}
+                  <option value="{{element.getId()}}">{{ element.getBrand() }}</option>
+              {% endfor %}
+          </select>
+          <button type="submit">Add Brand</button>
+      </form>
+
+      <form action="/updateStore/{store.getId()}" method="post">
+          <input name="_method" type="hidden" value="patch">
+          <label for="update_store">Update Store Name</label>
+          <input id="update_store" name="update_store" type="text">
+          <button type="submit">Update Store</button>
+      </form>
+
+      <form action="/deleteStore/{store.getId()}" method="post">
+          <input name="_method" type="hidden" value="delete">
+          <button type="submit">Delete</button>
+      </form>
+    </div>
 
   </body>
 </html>
